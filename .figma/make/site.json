@@ -1,0 +1,10 @@
+{
+  "description": "Enables couples to track shared activities and communicate seamlessly with a clean, polished interface focused on clarity and ease of use.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

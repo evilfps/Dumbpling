@@ -1,0 +1,402 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap');
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Dumbpling tokens.
+ * Monochrome base. Colour is reserved for feelings and the body (see --feel-*).
+ * Mirrors Dumbpling+Tokens.swift; components only reference semantic names.
+ */
+:root {
+  --page: #ffffff;
+  --stage: #f5f5f7;
+  --canvas: #f5f5f7;
+  --surface: #ffffff;
+  --surface-2: #ececef;
+  --fill: #e3e3e7;
+  --line: #e2e2e6;
+  --ink: #0b0b0c;
+  --ink-2: #6e6e73;
+  --ink-3: #a1a1a6;
+  --alert: #d92d20;
+  --live: #2fae62;
+
+  --glass: rgb(250 250 252 / 0.72);
+  --glass-line: rgb(0 0 0 / 0.06);
+  --scrim: rgb(0 0 0 / 0.18);
+
+  /* Luminous text: a soft vertical falloff, lit from the top. */
+  --lit-from: #0b0b0c;
+  --lit-to: #56565c;
+  --lit-glow: transparent;
+  --shimmer: rgb(255 255 255 / 0.55);
+
+  --btn-bg: linear-gradient(180deg, #2e2e31 0%, #0b0b0c 100%);
+  --btn-fg: #ffffff;
+  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 1px 2px rgb(0 0 0 / 0.14), 0 6px 16px -6px rgb(0 0 0 / 0.24);
+
+  --bubble-me-top: #3a3a3e;
+  --bubble-me: #141416;
+  --bubble-me-fg: #ffffff;
+  --bubble-them: #e9e9eb;
+
+  --switch-on: #0b0b0c;
+  --knob-on: #ffffff;
+  --avatar: linear-gradient(180deg, #a9adb8 0%, #858994 100%);
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.04), 0 0 0 0.5px rgb(0 0 0 / 0.03);
+  --shadow-2: 0 2px 8px rgb(0 0 0 / 0.04), 0 16px 32px -12px rgb(0 0 0 / 0.12);
+  --shadow-3: 0 2px 6px rgb(0 0 0 / 0.04), 0 24px 48px -12px rgb(0 0 0 / 0.2);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --page: #000000;
+  --stage: #0a0a0b;
+  --canvas: #000000;
+  --surface: #161618;
+  --surface-2: #232326;
+  --fill: #2d2d31;
+  --line: #262629;
+  --ink: #f5f5f7;
+  --ink-2: #98989f;
+  --ink-3: #5c5c62;
+  --alert: #ff5a4e;
+  --live: #3ccf73;
+
+  --glass: rgb(30 30 32 / 0.62);
+  --glass-line: rgb(255 255 255 / 0.08);
+  --scrim: rgb(0 0 0 / 0.55);
+
+  --lit-from: #ffffff;
+  --lit-to: rgb(255 255 255 / 0.56);
+  --lit-glow: rgb(255 255 255 / 0.14);
+  --shimmer: rgb(255 255 255 / 1);
+
+  --btn-bg: linear-gradient(180deg, #ffffff 0%, #dedee2 100%);
+  --btn-fg: #0b0b0c;
+  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / 1), 0 0 0 0.5px rgb(255 255 255 / 0.4), 0 0 28px -6px rgb(255 255 255 / 0.28);
+
+  --bubble-me-top: #ffffff;
+  --bubble-me: #e2e2e6;
+  --bubble-me-fg: #0b0b0c;
+  --bubble-them: #232326;
+
+  --switch-on: #f5f5f7;
+  --knob-on: #0b0b0c;
+  --avatar: linear-gradient(180deg, #6d707a 0%, #4a4d55 100%);
+
+  --shadow-1: 0 0 0 0.5px rgb(255 255 255 / 0.07);
+  --shadow-2: 0 0 0 0.5px rgb(255 255 255 / 0.08), 0 16px 40px -12px rgb(0 0 0 / 0.7);
+  --shadow-3: 0 0 0 0.5px rgb(255 255 255 / 0.09), 0 24px 64px -12px rgb(0 0 0 / 0.85);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
+
+  --color-page: var(--page);
+  --color-stage: var(--stage);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fill: var(--fill);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-alert: var(--alert);
+  --color-live: var(--live);
+  --color-glass: var(--glass);
+  --color-glass-line: var(--glass-line);
+  --color-scrim: var(--scrim);
+
+  --shadow-e1: var(--shadow-1);
+  --shadow-e2: var(--shadow-2);
+  --shadow-e3: var(--shadow-3);
+}
+
+@theme {
+  /* Feelings. Fills and glows only, never text. */
+  --color-radiant: #f4c46a;
+  --color-tender: #ee9fb6;
+  --color-calm: #8fbbe3;
+  --color-tired: #b2a6de;
+  --color-tense: #ee9e80;
+  --color-low: #8391b5;
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-sheet: 38px;
+
+  /* iOS Dynamic Type at the default (Large) size. 1 pt = 1 CSS px at 1×. */
+  --text-large-title: 34px;
+  --text-large-title--line-height: 41px;
+  --text-large-title--letter-spacing: 0.4px;
+  --text-large-title--font-weight: 700;
+  --text-title-1: 28px;
+  --text-title-1--line-height: 34px;
+  --text-title-1--letter-spacing: 0.38px;
+  --text-title-1--font-weight: 600;
+  --text-title-2: 22px;
+  --text-title-2--line-height: 28px;
+  --text-title-2--letter-spacing: -0.26px;
+  --text-title-2--font-weight: 600;
+  --text-title-3: 20px;
+  --text-title-3--line-height: 25px;
+  --text-title-3--letter-spacing: -0.45px;
+  --text-title-3--font-weight: 600;
+  --text-headline: 17px;
+  --text-headline--line-height: 22px;
+  --text-headline--letter-spacing: -0.43px;
+  --text-headline--font-weight: 600;
+  --text-body: 17px;
+  --text-body--line-height: 22px;
+  --text-body--letter-spacing: -0.43px;
+  --text-callout: 16px;
+  --text-callout--line-height: 21px;
+  --text-callout--letter-spacing: -0.31px;
+  --text-subhead: 15px;
+  --text-subhead--line-height: 20px;
+  --text-subhead--letter-spacing: -0.23px;
+  --text-footnote: 13px;
+  --text-footnote--line-height: 18px;
+  --text-footnote--letter-spacing: -0.08px;
+  --text-caption-1: 12px;
+  --text-caption-1--line-height: 16px;
+  --text-caption-1--letter-spacing: 0px;
+  --text-caption-2: 11px;
+  --text-caption-2--line-height: 13px;
+  --text-caption-2--letter-spacing: 0.06px;
+}
+
+@layer base {
+  html {
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--ink) 16%, transparent);
+  }
+
+  button {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--ink) 60%, transparent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* Text that feels lit from within. Use for display sizes only (≥ 22 pt). */
+@utility text-lit {
+  background-image: linear-gradient(180deg, var(--lit-from) 30%, var(--lit-to) 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px var(--lit-glow));
+}
+
+/* A slow highlight that passes across the text every 9 s. One per screen, at most. */
+@utility text-shimmer {
+  background-image:
+    linear-gradient(105deg, transparent 38%, var(--shimmer) 50%, transparent 62%),
+    linear-gradient(180deg, var(--lit-from) 30%, var(--lit-to) 120%);
+  background-size: 300% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px var(--lit-glow));
+  animation: shimmer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* One physical pixel on every display: 1 / displayScale. */
+@utility hairline {
+  height: 1px;
+  transform-origin: bottom;
+  @media (min-resolution: 2dppx) {
+    transform: scaleY(0.5);
+  }
+  @media (min-resolution: 3dppx) {
+    transform: scaleY(0.334);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 150% 0, 0 0;
+  }
+  55%,
+  100% {
+    background-position: -50% 0, 0 0;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.04) rotate(8deg);
+  }
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .text-shimmer {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/*
+ * Liquid Glass (web approximation of iOS 26).
+ * Blur + saturation for the lens, a specular rim lit from the top-left,
+ * an inner bevel, and a light that blooms from the touch point.
+ * Lives in the components layer so utilities (position, radius) still win.
+ */
+@layer components {
+  .lg {
+    --lg-tint: rgb(255 255 255 / 0.5);
+    --lg-blur: 14px;
+    --lg-rim: linear-gradient(135deg, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.25) 30%, rgb(255 255 255 / 0) 55%, rgb(255 255 255 / 0.45));
+    --lg-shadow:
+      0 10px 30px -10px rgb(0 0 0 / 0.18),
+      0 1px 3px rgb(0 0 0 / 0.06),
+      inset 0 0 0 0.5px rgb(0 0 0 / 0.05),
+      inset 0 -10px 18px -14px rgb(255 255 255 / 0.9);
+    position: relative;
+    isolation: isolate;
+    background: var(--lg-tint);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(1.9) brightness(1.05);
+    backdrop-filter: blur(var(--lg-blur)) saturate(1.9) brightness(1.05);
+    box-shadow: var(--lg-shadow);
+  }
+  [data-theme='dark'] .lg,
+  .lg-clear {
+    --lg-tint: rgb(48 48 52 / 0.36);
+    --lg-rim: linear-gradient(135deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.1) 30%, rgb(255 255 255 / 0) 55%, rgb(255 255 255 / 0.22));
+    --lg-shadow:
+      0 12px 32px -10px rgb(0 0 0 / 0.55),
+      inset 0 0 0 0.5px rgb(255 255 255 / 0.1),
+      inset 0 -10px 18px -14px rgb(255 255 255 / 0.35);
+  }
+  /* Clear glass: for use over photos and wallpapers, with white content. */
+  .lg-clear,
+  [data-theme='dark'] .lg-clear {
+    --lg-tint: rgb(255 255 255 / 0.1);
+    --lg-blur: 8px;
+    color: #fff;
+  }
+  .lg-sheet {
+    --lg-tint: rgb(252 252 253 / 0.78);
+    --lg-blur: 30px;
+  }
+  [data-theme='dark'] .lg-sheet {
+    --lg-tint: rgb(30 30 33 / 0.72);
+  }
+  .lg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--lg-rim);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .lg-light {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(120px circle at var(--lg-x, 50%) var(--lg-y, 0%), rgb(255 255 255 / 0.55), transparent 65%);
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .lg-interactive:hover > .lg-light {
+    opacity: 0.45;
+  }
+  .lg-interactive:active > .lg-light {
+    opacity: 1;
+    transition-duration: 0.12s;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg,
+  .lg-sheet {
+    --lg-tint: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@keyframes wave {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.08) translate(0, 0);
+  }
+  to {
+    transform: scale(1.16) translate(-2%, 1%);
+  }
+}
